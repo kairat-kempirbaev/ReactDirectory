@@ -42,29 +42,48 @@ class Movies extends Component {
                 }
             )
     };
+
     render() {
+        const style = {
+            "list-style-type": 'none',
+        };
+
         const { items, error, isLoaded } = this.state;
         if (!isLoaded) {
             return <p>Loading ...</p>;
         }
         return (
-            <table className="center w-75 table text-center rounded">
+            <table className="center w-75 table text-center rounded table-striped">
                 <thead>
                     <tr>
-                        <th>Title</th>
-                        <th>Director</th>
-                        <th>Stars</th>
-                        <th>Genres</th>
-                        <th>Rating</th>
-                        <th>Year</th>
+                        <th scope="col">Record #</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Rating</th>
+                        <th scope="col">Director</th>
+                        <th scope="col">Stars</th>
+                        <th scope="col">Genres</th>
+                        <th scope="col">Year</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {this.state.items.map((item) =>
+                    {this.state.items.map((item, index) =>
                         <tr key={item.id}>
-                            <td>${item.title}</td>
-                            <td>${item.director}</td>
-                            <td>${item.year}</td>
+                            <th scope="row">{index + 1}</th>
+                            <td>{item.title}</td>
+                            <td>{item.rating ? item.rating.rating : 0}</td>
+                            <td>{item.director}</td>
+
+                            <td>
+                                <ul style={style}>
+                                    {item.stars.slice(0, 3).map((nested_item) => <li key={item.id + "-" + nested_item.id}  >{nested_item.name}</li>)}
+                                </ul>
+                            </td>
+                            <td>
+                                <ul style={style}>
+                                    {item.genres.map((nested_item) => <li key={item.id + "-" + nested_item.id} >{nested_item.name}</li>)}
+                                </ul>
+                            </td>
+                            <td>{item.year}</td>
                         </tr>)}
                 </tbody>
             </table>
